@@ -11,6 +11,13 @@
     display:flex; align-items:center; justify-content:center;
     min-height:100vh;
   }
+  /* .canvas gets an exact 16:9 pixel size set by __lockTo16x9() below, so the
+     final crop is always exactly 16:9 regardless of how tall .card grows with
+     more steps/branches. Same background as body so no visible seam. */
+  .canvas{
+    background:#05070c;
+    display:flex; align-items:center; justify-content:center;
+  }
   .card{
     background:#0d1117; border:1px solid #21262d; border-radius:14px;
     padding:30px 36px 26px; width:600px;
@@ -33,6 +40,7 @@
   .legend i{width:9px;height:9px;border-radius:50%;display:inline-block;}
 </style></head>
 <body>
+  <div class="canvas" id="canvas">
   <div class="card">
     <div class="titlebar">
       <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -79,4 +87,26 @@
       <span><i style="background:var(--purple);"></i>Ergebnis</span>
     </div>
   </div>
+  </div>
+  <script>
+    // Sizes #canvas to an exact 16:9 box around .card (with margin), so the
+    // final crop is always exactly 16:9 no matter how tall the card grows.
+    // Call this, then read canvas.getBoundingClientRect() for the crop box.
+    window.__lockTo16x9 = function(margin) {
+      margin = margin || 60;
+      var card = document.querySelector('.card');
+      var canvas = document.getElementById('canvas');
+      var cardH = card.getBoundingClientRect().height;
+      var cardW = card.getBoundingClientRect().width;
+      var h = Math.ceil(cardH + margin * 2);
+      var w = Math.round(h * 16 / 9);
+      if (w < cardW + margin * 2) {
+        w = Math.ceil(cardW + margin * 2);
+        h = Math.round(w * 9 / 16);
+      }
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      return { width: w, height: h };
+    };
+  </script>
 </body></html>
