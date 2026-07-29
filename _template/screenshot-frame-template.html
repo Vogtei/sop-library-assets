@@ -6,9 +6,10 @@
      Resize the browser viewport to match window.offsetWidth/offsetHeight
      (read via JS after load) before taking the final screenshot, so there is
      no extra page background or scrollbar around the card. */
-  html,body{margin:0;padding:0;background:#e9eaed;font-size:0;}
+  html,body{margin:0;padding:0;background:#e9eaed;font-size:0;height:100%;}
   body{
     font-family: -apple-system, "SF Pro Text", ui-sans-serif, system-ui, sans-serif;
+    display:flex; align-items:center; justify-content:center;
   }
   .window{
     display:inline-block;
