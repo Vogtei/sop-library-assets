@@ -1,0 +1,66 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;background:#e9eaed;}
+  body{
+    font-family: -apple-system, "SF Pro Text", ui-sans-serif, system-ui, sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh;
+  }
+  /* Window card: fixed 16:9 aspect, rounded corners, soft shadow, light grey chrome */
+  .window{
+    width:960px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#ffffff;
+    box-shadow: 0 25px 60px rgba(0,0,0,.16), 0 4px 14px rgba(0,0,0,.08);
+  }
+  .titlebar{
+    height:34px;
+    background:#ebebec;
+    border-bottom:1px solid #dcdcde;
+    display:flex; align-items:center;
+    padding:0 14px;
+    position:relative;
+  }
+  .dot{width:11px;height:11px;border-radius:50%;margin-right:7px;}
+  .dot.red{background:#ff5f56} .dot.yellow{background:#ffbd2e} .dot.green{background:#27c93f}
+  .titlebar .label{
+    position:absolute; left:0; right:0; text-align:center;
+    font-size:12.5px; color:#7c7c80; pointer-events:none;
+  }
+  /* 16:9 viewport that holds the actual screenshot, letterboxed (never cropped) */
+  .frame{
+    position:relative;
+    width:960px; height:540px; /* 16:9 */
+    background:#f5f5f7;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .frame img{
+    max-width:100%; max-height:100%;
+    display:block;
+  }
+  /* Click-highlight: simple circle/ellipse outline around the element that was clicked.
+     Position with top/left/width/height in % relative to .frame, duplicate the div for
+     multiple highlights, delete it entirely if this screenshot has no click to mark. */
+  .highlight{
+    position:absolute;
+    border:3px solid #ff3b30;
+    border-radius:50%;
+    box-shadow:0 0 0 3px rgba(255,59,48,.18);
+    pointer-events:none;
+  }
+</style></head>
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="label"><!-- optional: app name / URL / window title --></div>
+    </div>
+    <div class="frame">
+      <img src="<!-- SCREENSHOT_PATH_OR_DATA_URI -->" />
+      <!-- <div class="highlight" style="top:38%;left:52%;width:80px;height:36px;"></div> -->
+    </div>
+  </div>
+</body></html>
