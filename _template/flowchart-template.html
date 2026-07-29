@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root{
+    --cyan:#39c5f5; --gray:#8b949e; --amber:#d29922;
+    --green:#3fb950; --red:#f85149; --purple:#bc8cff;
+  }
+  html,body{margin:0;background:#05070c;}
+  body{
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh;
+  }
+  .card{
+    background:#0d1117; border:1px solid #21262d; border-radius:14px;
+    padding:30px 36px 26px; width:600px;
+    box-shadow:0 25px 70px rgba(0,0,0,.55);
+  }
+  .titlebar{display:flex; align-items:center; gap:8px; margin-bottom:26px;}
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.red{background:#ff5f56} .dot.yellow{background:#ffbd2e} .dot.green{background:#27c93f}
+  .title{margin-left:8px;color:#6e7681;font-size:12.5px;}
+  .flow{display:flex;flex-direction:column;align-items:center;}
+  .node{border-radius:9px;padding:12px 20px;text-align:center;min-width:400px;background:rgba(255,255,255,.025);}
+  .label{font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px;font-weight:600;}
+  .content{font-size:14.5px;color:#e6edf3;line-height:1.45;}
+  .connector{width:2px;height:24px;margin:0 auto;background:linear-gradient(#30363d,#484f58,#30363d);}
+  .branches{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0 auto;}
+  .chip{border-radius:8px;padding:11px 14px;min-width:172px;max-width:190px;text-align:center;background:rgba(255,255,255,.025);}
+  .chip .content{font-size:12.5px;}
+  .legend{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:30px;font-size:11px;color:#8b949e;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend i{width:9px;height:9px;border-radius:50%;display:inline-block;}
+</style></head>
+<body>
+  <div class="card">
+    <div class="titlebar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="title"><!-- SLUG -->.sop.md → Ablauf</div>
+    </div>
+    <div class="flow">
+      <div class="node" style="border:1.5px solid var(--cyan);">
+        <div class="label" style="color:var(--cyan);">Trigger</div>
+        <div class="content"><!-- Auslöser --></div>
+      </div>
+      <div class="connector"></div>
+      <div class="node" style="border:1.5px solid var(--gray);">
+        <div class="label" style="color:var(--gray);">Schritt 1</div>
+        <div class="content"><!-- erster Schritt, weitere Schritt-Nodes + .connector nach Bedarf duplizieren --></div>
+      </div>
+      <div class="connector"></div>
+      <div class="node" style="border:1.5px dashed var(--amber);">
+        <div class="label" style="color:var(--amber);">Entscheidung</div>
+        <div class="content"><!-- Entscheidungsfrage --></div>
+      </div>
+      <div class="connector"></div>
+      <div class="branches">
+        <div class="chip" style="border:1.5px solid var(--green);">
+          <div class="label" style="color:var(--green);">Ja</div>
+          <div class="content"><!-- Ergebnis Zweig 1 --></div>
+        </div>
+        <div class="chip" style="border:1.5px solid var(--red);">
+          <div class="label" style="color:var(--red);">Nein</div>
+          <div class="content"><!-- Ergebnis Zweig 2, weitere .chip bei Bedarf --></div>
+        </div>
+      </div>
+      <div class="connector"></div>
+      <div class="node" style="border:1.5px solid var(--purple);">
+        <div class="label" style="color:var(--purple);">Ergebnis</div>
+        <div class="content"><!-- Endzustand --></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--cyan);"></i>Trigger</span>
+      <span><i style="background:var(--gray);"></i>Schritt</span>
+      <span><i style="background:var(--amber);"></i>Entscheidung</span>
+      <span><i style="background:var(--green);"></i>Ja-Pfad</span>
+      <span><i style="background:var(--red);"></i>Nein-Pfad</span>
+      <span><i style="background:var(--purple);"></i>Ergebnis</span>
+    </div>
+  </div>
+</body></html>
