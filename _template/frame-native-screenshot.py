@@ -8,14 +8,20 @@ Never crops or shrinks the source image - the canvas expands to whichever
 16:9 size fully contains it (plus a small margin), so this works for any
 native window resolution/aspect ratio.
 """
+import os
 import sys
-from PIL import Image, ImageFilter, ImageChops
+from PIL import Image, ImageFilter, ImageChops, ImageDraw
 
 BG_DEFAULT = "#e9eaed"
 MARGIN_RATIO = 0.06       # breathing room around the screenshot, as a fraction of its larger dimension
 SHADOW_BLUR = 40          # gaussian blur radius for the soft shadow
 SHADOW_OFFSET_Y = 18      # px the shadow is nudged down
 SHADOW_OPACITY = 0.38     # 0-1
+
+CLICK_MARKER_RATIO = 0.05   # circle diameter as a fraction of the screenshot's larger dimension
+CLICK_MARKER_MIN = 50
+CLICK_MARKER_MAX = 140
+CLICK_MARKER_COLOR = (255, 0, 0, 128)  # 50% transparent red
 
 
 def hex_to_rgb(h):
@@ -63,6 +69,21 @@ def main():
     composed = Image.new("RGBA", (canvas_w, canvas_h), bg_rgb + (255,))
     composed.paste(shadow, (0, 0), shadow)
     composed.paste(shot, (paste_x, paste_y), shot)
+
+    # Click-position marker: a sibling <input>.pos.txt (written by snapshot.sh
+    # from a real, recent mouse click - never guessed) containing "px,py" in
+    # the screenshot's own pixel space. Absent file = no marker, on purpose.
+    pos_path = os.path.splitext(in_path)[0] + ".pos.txt"
+    if os.path.exists(pos_path):
+        with open(pos_path) as f:
+            px, py = (int(v) for v in f.read().strip().split(","))
+        diameter = max(CLICK_MARKER_MIN, min(CLICK_MARKER_MAX, round(max(w, h) * CLICK_MARKER_RATIO)))
+        r = diameter // 2
+        overlay = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(overlay)
+        cx, cy = paste_x + px, paste_y + py
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=CLICK_MARKER_COLOR)
+        composed = Image.alpha_composite(composed, overlay)
 
     composed.convert("RGB").save(out_path, "JPEG", quality=92)
     print(f"{out_path}: {canvas_w}x{canvas_h}")
