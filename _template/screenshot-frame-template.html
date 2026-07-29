@@ -1,15 +1,18 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <style>
-  html,body{margin:0;background:#e9eaed;}
+  /* No forced aspect ratio — the window sizes exactly to the screenshot's
+     own native resolution (whatever the recording/capture happened to be).
+     Resize the browser viewport to match window.offsetWidth/offsetHeight
+     (read via JS after load) before taking the final screenshot, so there is
+     no extra page background or scrollbar around the card. */
+  html,body{margin:0;padding:0;background:#e9eaed;font-size:0;}
   body{
     font-family: -apple-system, "SF Pro Text", ui-sans-serif, system-ui, sans-serif;
-    display:flex; align-items:center; justify-content:center;
-    min-height:100vh;
   }
-  /* Window card: fixed 16:9 aspect, rounded corners, soft shadow, light grey chrome */
   .window{
-    width:960px;
+    display:inline-block;
+    font-size:14px;
     border-radius:14px;
     overflow:hidden;
     background:#ffffff;
@@ -29,21 +32,17 @@
     position:absolute; left:0; right:0; text-align:center;
     font-size:12.5px; color:#7c7c80; pointer-events:none;
   }
-  /* 16:9 viewport that holds the actual screenshot, letterboxed (never cropped) */
   .frame{
     position:relative;
-    width:960px; height:540px; /* 16:9 */
-    background:#f5f5f7;
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
+    line-height:0; /* kill the inline-img whitespace gap */
   }
   .frame img{
-    max-width:100%; max-height:100%;
     display:block;
+    width:auto; height:auto; /* native resolution, no scaling/cropping */
   }
   /* Click-highlight: simple circle/ellipse outline around the element that was clicked.
-     Position with top/left/width/height in % relative to .frame, duplicate the div for
-     multiple highlights, delete it entirely if this screenshot has no click to mark. */
+     Position with top/left/width/height in px (or %) relative to .frame, duplicate the
+     div for multiple highlights, delete it entirely if this screenshot has no click to mark. */
   .highlight{
     position:absolute;
     border:3px solid #ff3b30;
@@ -60,7 +59,7 @@
     </div>
     <div class="frame">
       <img src="<!-- SCREENSHOT_PATH_OR_DATA_URI -->" />
-      <!-- <div class="highlight" style="top:38%;left:52%;width:80px;height:36px;"></div> -->
+      <!-- <div class="highlight" style="top:180px;left:420px;width:80px;height:36px;"></div> -->
     </div>
   </div>
 </body></html>
